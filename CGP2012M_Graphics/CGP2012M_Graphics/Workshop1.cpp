@@ -24,6 +24,9 @@
 
 
 int main(int argc, char *argv[]) {
+
+	srand(0);
+
 	//SDL Initialise
 	SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -44,19 +47,29 @@ int main(int argc, char *argv[]) {
 	// Create an OpenGL context associated with the window.
 	SDL_GLContext glcontext = SDL_GL_CreateContext(win);
 
+	bool windowOpen = true;
+	float valueSin = 0.0f;
+	float valueCos = 0.0f;
+
 	//GLEW initialise
 	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
 
 	//*****************************
 	//'game' loop
-	while (true)
+	while (windowOpen)
 	{
 
 		//****************************
 		// OpenGL calls.
+		GLuint currentTime;
+		currentTime = SDL_GetTicks();
+		valueSin = (float)sin(currentTime/1000.0f);
+		valueCos = (float)cos(currentTime / 1000.0f);
+
+		GLfloat colour[] = { valueSin, valueCos, 1.0f, 1.0f };
+		glClearColor(colour[0], colour[1], colour[2], colour[3]);
 		
-		glClearColor(1.0f, 0.0f, 0.0f, 1);
 		glClear(GL_COLOR_BUFFER_BIT); 
 		SDL_GL_SwapWindow(win);
 
@@ -66,10 +79,8 @@ int main(int argc, char *argv[]) {
 		//Any input to the program is done here
 
 		SDL_Event event;
-		bool windowOpen = true;
-
-		while (windowOpen)
-		{
+		
+		
 			if (SDL_PollEvent(&event))
 			{
 				if (event.type == SDL_QUIT)
@@ -77,7 +88,7 @@ int main(int argc, char *argv[]) {
 					windowOpen = false;
 				}
 			}
-		}
+	
 
 	}
 	//****************************
