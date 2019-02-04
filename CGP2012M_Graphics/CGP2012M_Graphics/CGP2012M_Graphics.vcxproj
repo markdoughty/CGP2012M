@@ -19,11 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Circle.h" />
+    <ClInclude Include="GLerror.h" />
+    <ClInclude Include="SDL_Start.h" />
     <ClInclude Include="ShaderClass.h" />
     <ClInclude Include="Triangle.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Week2a_2Triangles.cpp" />
+    <ClCompile Include="Week2a_MultiCircles.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

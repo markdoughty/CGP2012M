@@ -15,7 +15,7 @@ public:
 
 	//define vertices for the triangle
 	GLfloat vertices[9] = {
-		-0.5f, -0.5f, 0.0f,	
+		-0.5f, -0.5f, 0.0f,
 		-0.5f,  0.5f, 0.0f,	
 		0.0f, 0.0f, 0.0f
 
@@ -46,7 +46,7 @@ public:
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 		glEnableVertexAttribArray(0);
 		//colours
-		//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+		//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 		//glEnableVertexAttribArray(1);
 		//texture coords
 		//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));

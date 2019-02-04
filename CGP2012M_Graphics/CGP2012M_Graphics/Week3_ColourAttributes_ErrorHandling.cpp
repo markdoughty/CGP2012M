@@ -1,9 +1,13 @@
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
+#include <vector>
 
 //include shape, shader header files
+#include "GLerror.h"
+#include "SDL_Start.h"
 #include "Triangle.h"
+#include "Circle.h"
 #include "ShaderClass.h"
 
 // // GLEW - OpenGL Extension Wrangler - http://glew.sourceforge.net/
@@ -14,6 +18,8 @@
 #include "windows.h"
 
 // SDL - Simple DirectMedia Layer - https://www.libsdl.org/
+#ifndef SDL_H
+#define SDL_H
 #include "SDL.h"
 //#include "SDL_image.h"
 //#include "SDL_mixer.h"
@@ -30,41 +36,51 @@
 
 
 int main(int argc, char *argv[]) {
-	//SDL Initialise
-	SDL_Init(SDL_INIT_EVERYTHING);
+	//start and initialise SDL
+	SDL_Start sdl;
+	SDL_GLContext context = sdl.Init();
 
-	//SDL create window
-	SDL_Window *win = SDL_CreateWindow("OpenGL Window", 100, 100, 800, 600, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-
-	//set context attributes
-	//sets opengl version to 4.3
-	int major = 4, minor = 3;
-
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, major);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, minor);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_PROFILE_CORE); //use core profile
-	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG); //ask for forward compatible
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	//SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-	// Create an OpenGL context associated with the window.
-	SDL_GLContext glcontext = SDL_GL_CreateContext(win);
+	//error class
+	GLerror glerr;
+	int errorLabel;
 
 	//GLEW initialise
 	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
 
-	
+	//register debug callback
+	if (glDebugMessageCallback)
+	{
 
+		std::cout << "Registering OpenGL Debug callback function" << std::endl;
+		glDebugMessageCallback(glerr.openglCallbackFunction, &errorLabel);
+		glDebugMessageControl(GL_DONT_CARE,
+			GL_DONT_CARE,
+			GL_DONT_CARE,
+			0,
+			NULL,
+			true);
+	}
 
 	//*****************************************************
 	//OpenGL specific data
-	//create objects
-	Triangle tri;
+	//create 10 circles
+	float randValue, randValue2;
+	srand(time(0));
+	std::vector<Circle> circles;
+
+	for (int i = 0; i < 5; i++)
+	{
+		randValue = (float)rand() / RAND_MAX;
+		randValue2 = (float)rand() / RAND_MAX;
+		circles.push_back(Circle(0.2f, (randValue-0.5f), (randValue2 -0.5f)));
+	}
+
+	errorLabel = 0;
 
 	//create shaders
-	Shader vSh("..//..//Assets//Shaders//shader.vert");
-	Shader fSh("..//..//Assets//Shaders//shader.frag");
+	Shader vSh("..//..//Assets//Shaders//shaderColour.vert");
+	Shader fSh("..//..//Assets//Shaders//shaderColour.frag");
 
 	//create, allocate and compile shaders
 	//compile the shader code
@@ -84,10 +100,16 @@ int main(int argc, char *argv[]) {
 	glDeleteShader(vSh.shaderID);
 	glDeleteShader(fSh.shaderID);
 
+	errorLabel = 2;
+
 	//OpenGL buffers
-	//set buffers for the triangle
-	tri.setBuffers();
-	
+	//set buffers for the circles
+	for (int q = 0; q < 5; q++)
+	{
+		circles[q].setBuffers();
+	}
+
+	errorLabel = 3;
 	//***********************************************
 
 	SDL_Event event;
@@ -104,23 +126,33 @@ int main(int argc, char *argv[]) {
 		glClearColor(1.0f, 1.0f, 1.0f, 1);
 		glClear(GL_COLOR_BUFFER_BIT); 
 
-		//draw the triangles
+		errorLabel = 4;
+
+		/*while ((err = glGetError()) != GL_NO_ERROR) {
+			std::cerr << "OpenGL error: " << err << std::endl;
+		}*/
+
+		//draw the circles
 		//Use shader program we have compiled and linked
 		glUseProgram(shaderProgram);
 
-		//set to wireframe so we can see the 2 triangles
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//set to wireframe so we can see the circles
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-		tri.render();
+		//render the circles
+		for (int q = 0; q < 5; q++)
+		{
+			circles[q].render();
+		}
 
-		SDL_GL_SwapWindow(win);
+
+		SDL_GL_SwapWindow(sdl.win);
 
 		//*****************************
 		//SDL handled input
 		//Any input to the program is done here
 
-		while (windowOpen)
-		{
+		
 			if (SDL_PollEvent(&event))
 			{
 				if (event.type == SDL_QUIT)
@@ -128,12 +160,12 @@ int main(int argc, char *argv[]) {
 					windowOpen = false;
 				}
 			}
-		}
+		
 
 	}
 	//****************************
 	// Once finished with OpenGL functions, the SDL_GLContext can be deleted.
-	SDL_GL_DeleteContext(glcontext);
+	SDL_GL_DeleteContext(context);
 
 	SDL_Quit();
 	return 0;
@@ -143,4 +175,5 @@ int main(int argc, char *argv[]) {
 
 
 }
+#endif
 #endif
