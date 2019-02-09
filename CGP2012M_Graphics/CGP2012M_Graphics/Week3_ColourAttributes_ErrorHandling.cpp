@@ -64,6 +64,9 @@ int main(int argc, char *argv[]) {
 
 	//*****************************************************
 	//OpenGL specific data
+	//create triangle
+	Triangle tri;
+
 	//create 10 circles
 	float randValue, randValue2;
 	srand(time(0));
@@ -81,28 +84,40 @@ int main(int argc, char *argv[]) {
 	//create shaders
 	Shader vSh("..//..//Assets//Shaders//shaderColour.vert");
 	Shader fSh("..//..//Assets//Shaders//shaderColour.frag");
+	Shader vSh1("..//..//Assets//Shaders//shader.vert");
+	Shader fSh1("..//..//Assets//Shaders//shader.frag");
 
 	//create, allocate and compile shaders
 	//compile the shader code
 	//1 for vertex, 2 for fragment - there is probably a better way to do this
 	vSh.getShader(1);
 	fSh.getShader(2);
+	vSh1.getShader(1);
+	fSh1.getShader(2);
 
 	//create shader program, attach shaders together in the shader program
 	GLuint shaderProgram;
 	shaderProgram = glCreateProgram();
-
 	glAttachShader(shaderProgram, vSh.shaderID);
 	glAttachShader(shaderProgram, fSh.shaderID);
 	glLinkProgram(shaderProgram);
 
+	GLuint shaderProgram1;
+	shaderProgram1 = glCreateProgram();
+	glAttachShader(shaderProgram1, vSh1.shaderID);
+	glAttachShader(shaderProgram1, fSh1.shaderID);
+	glLinkProgram(shaderProgram1);
+
 	//delete shader source code pointers
 	glDeleteShader(vSh.shaderID);
 	glDeleteShader(fSh.shaderID);
+	glDeleteShader(vSh1.shaderID);
+	glDeleteShader(fSh1.shaderID);
 
 	errorLabel = 2;
 
 	//OpenGL buffers
+	tri.setBuffers();
 	//set buffers for the circles
 	for (int q = 0; q < 5; q++)
 	{
@@ -132,6 +147,10 @@ int main(int argc, char *argv[]) {
 			std::cerr << "OpenGL error: " << err << std::endl;
 		}*/
 
+		glUseProgram(shaderProgram1);
+		glBindVertexArray(tri.VAO);
+		tri.render();
+
 		//draw the circles
 		//Use shader program we have compiled and linked
 		glUseProgram(shaderProgram);
@@ -142,8 +161,12 @@ int main(int argc, char *argv[]) {
 		//render the circles
 		for (int q = 0; q < 5; q++)
 		{
+			glBindVertexArray(circles[q].VAO);
 			circles[q].render();
 		}
+
+		
+
 
 
 		SDL_GL_SwapWindow(sdl.win);

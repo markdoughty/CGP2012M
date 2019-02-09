@@ -30,9 +30,15 @@
     <ClInclude Include="GLerror.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Triangle_T.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Week2a_MultiCircles.cpp">
+    <ClCompile Include="Week4_Uniform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

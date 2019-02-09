@@ -30,6 +30,19 @@ public:
 		std::cout << "import success:" << std::endl;
 
 	}
+
+	void shaderFileName(const char* fileName)
+	{
+		std::ifstream inFile(fileName);
+		while (inFile.good())
+		{
+			std::string line;
+			std::getline(inFile, line);
+			shaderText.append(line + "\n");
+		}
+		codePtr = shaderText.c_str();
+		std::cout << "import success:" << std::endl;
+	}
 	
 	void getShader(GLint type)
 	{

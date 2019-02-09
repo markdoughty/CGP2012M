@@ -3,20 +3,24 @@
 #include <array>
 #include <ctime>
 #include "ShaderClass.h"
+#include "TextureClass.h"
 
-class Triangle
+class Triangle_T
 {
 public:
-	
+	//shader for the triangle
 	Shader vSh1, fSh1;
 	GLuint shaderProgram1;
+	//single texture for the triangle
+	Texture tex;
+
 
 	//constructor
-	Triangle()
+	Triangle_T()
 	{
-		//set up shaders for the triangle
-		vSh1.shaderFileName("..//..//Assets//Shaders//shader_time.vert");
-		fSh1.shaderFileName("..//..//Assets//Shaders//shader_time.frag");
+		//shaders
+		vSh1.shaderFileName("..//..//Assets//Shaders//shader_vColour_Texture.vert");
+		fSh1.shaderFileName("..//..//Assets//Shaders//shader_vColour_Texture.frag");
 
 		vSh1.getShader(1);
 		fSh1.getShader(2);
@@ -28,13 +32,17 @@ public:
 
 		glDeleteShader(vSh1.shaderID);
 		glDeleteShader(fSh1.shaderID);
+
+		//load the texture file
+		tex.load("..//..//Assets//Textures//carbon-fibre-seamless-texture.jpg");
+
 	}
 
-	//define vertices for the triangle
-	GLfloat vertices[18] = {
-		-0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
-		-0.5f,  0.5f, 0.0f,	 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 0.0f,    0.0f, 0.0f, 1.0f
+	//define vertices for the triangle -position/colour/texture coordinates
+	GLfloat vertices[24] = {
+		-0.5f, -0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
+		-0.5f,  0.5f, 0.0f,	  0.0f, 1.0f, 0.0f,   1.0f, 0.0f,
+		 0.0f, 0.0f, 0.0f,    0.0f, 0.0f, 1.0f,   0.0f, 0.0f
 
 	};
 
@@ -60,21 +68,28 @@ public:
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 		// Then set our vertex attributes pointers
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
 		glEnableVertexAttribArray(0);
 		//colours
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 		glEnableVertexAttribArray(1);
 		//texture coords
-		//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
-		//glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+		glEnableVertexAttribArray(2);
 		//Unbind the VAO
 		glBindVertexArray(0);
+
+		//texture buffers
+		tex.setBuffers();
 	}
 
 	void render()
 	{
 		//draw the triangle 
+		//specify the shader program and texture
+		glUseProgram(shaderProgram1);
+		glBindTexture(GL_TEXTURE_2D, tex.texture);
+		
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindVertexArray(0);

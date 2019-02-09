@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
 		glUseProgram(shaderProgram);
 
 		//set to wireframe so we can see the circles
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		//render the circles
 		for (int q = 0; q < 5; q++)

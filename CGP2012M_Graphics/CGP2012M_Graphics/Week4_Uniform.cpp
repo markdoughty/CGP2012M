@@ -4,10 +4,12 @@
 #include <vector>
 
 //include shape, shader header files
+#include "GLerror.h"
 #include "SDL_Start.h"
 #include "Triangle.h"
 #include "Circle.h"
-#include "ShaderClass.h"
+#ifndef SHADERCLASS_H
+#define SHADERCLASS_H
 
 // // GLEW - OpenGL Extension Wrangler - http://glew.sourceforge.net/
 // // NOTE: include before SDL.h
@@ -39,12 +41,33 @@ int main(int argc, char *argv[]) {
 	SDL_Start sdl;
 	SDL_GLContext context = sdl.Init();
 
+	//error class
+	GLerror glerr;
+	int errorLabel;
+
 	//GLEW initialise
 	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
 
+	//register debug callback
+	if (glDebugMessageCallback)
+	{
+
+		std::cout << "Registering OpenGL Debug callback function" << std::endl;
+		glDebugMessageCallback(glerr.openglCallbackFunction, &errorLabel);
+		glDebugMessageControl(GL_DONT_CARE,
+			GL_DONT_CARE,
+			GL_DONT_CARE,
+			0,
+			NULL,
+			true);
+	}
+
 	//*****************************************************
 	//OpenGL specific data
+	//create triangle
+	Triangle tri;
+
 	//create 10 circles
 	float randValue, randValue2;
 	srand(time(0));
@@ -57,20 +80,23 @@ int main(int argc, char *argv[]) {
 		circles.push_back(Circle(0.2f, (randValue-0.5f), (randValue2 -0.5f)));
 	}
 
+	errorLabel = 0;
+
 	//create shaders
-	Shader vSh("..//..//Assets//Shaders//shader.vert");
-	Shader fSh("..//..//Assets//Shaders//shader.frag");
+	Shader vSh("..//..//Assets//Shaders//shaderColour.vert");
+	Shader fSh("..//..//Assets//Shaders//shaderColour.frag");
+	
 
 	//create, allocate and compile shaders
 	//compile the shader code
 	//1 for vertex, 2 for fragment - there is probably a better way to do this
 	vSh.getShader(1);
 	fSh.getShader(2);
+	
 
 	//create shader program, attach shaders together in the shader program
 	GLuint shaderProgram;
 	shaderProgram = glCreateProgram();
-
 	glAttachShader(shaderProgram, vSh.shaderID);
 	glAttachShader(shaderProgram, fSh.shaderID);
 	glLinkProgram(shaderProgram);
@@ -79,17 +105,27 @@ int main(int argc, char *argv[]) {
 	glDeleteShader(vSh.shaderID);
 	glDeleteShader(fSh.shaderID);
 
+
+	errorLabel = 2;
+
 	//OpenGL buffers
+	tri.setBuffers();
 	//set buffers for the circles
 	for (int q = 0; q < 5; q++)
 	{
 		circles[q].setBuffers();
 	}
-	
+
+	errorLabel = 3;
 	//***********************************************
 
 	SDL_Event event;
 	bool windowOpen = true;
+
+	//set up he 'uTime' uniform which sends
+	//a time value from the main program to the shaders
+	GLfloat currentTime;
+	int timeLocation;
 
 	//*****************************
 	//'game' loop
@@ -102,6 +138,23 @@ int main(int argc, char *argv[]) {
 		glClearColor(1.0f, 1.0f, 1.0f, 1);
 		glClear(GL_COLOR_BUFFER_BIT); 
 
+		errorLabel = 4;
+
+		/*while ((err = glGetError()) != GL_NO_ERROR) {
+			std::cerr << "OpenGL error: " << err << std::endl;
+		}*/
+
+		glUseProgram(tri.shaderProgram1);
+		//set uniform variable value in shader
+		currentTime = SDL_GetTicks();
+		//get the 'uTime' uniform variable location
+		timeLocation = glGetUniformLocation(tri.shaderProgram1, "uTime");
+		//set the 'uTime' uniform variable in the shader with 'currentTime'
+		glProgramUniform1f(tri.shaderProgram1, timeLocation, currentTime);
+
+		glBindVertexArray(tri.VAO);
+		tri.render();
+
 		//draw the circles
 		//Use shader program we have compiled and linked
 		glUseProgram(shaderProgram);
@@ -112,8 +165,13 @@ int main(int argc, char *argv[]) {
 		//render the circles
 		for (int q = 0; q < 5; q++)
 		{
+			glBindVertexArray(circles[q].VAO);
 			circles[q].render();
 		}
+
+		
+
+
 
 		SDL_GL_SwapWindow(sdl.win);
 
@@ -144,5 +202,6 @@ int main(int argc, char *argv[]) {
 
 
 }
+#endif
 #endif
 #endif

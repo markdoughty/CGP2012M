@@ -57,8 +57,8 @@ public:
 		vertices[2] = 0.0f;
 		//colour of origin vertex
 		vertices[3] = 0.0f;
-		vertices[4] = 0.9f;
-		vertices[5] = 0.0f;
+		vertices[4] = 0.0f;
+		vertices[5] = 0.1f;
 
 		GLfloat angle = 0.0f;
 
@@ -69,9 +69,9 @@ public:
 			vertices[i + 1] = (radius * sin(angle)) + offsetY;
 			vertices[i + 2] = 0.0f;
 			//colour information
-			vertices[i + 3] = 0.0f;
+			vertices[i + 3] = 0.8f;
 			vertices[i + 4] = 0.0f;
-			vertices[i + 5] = 0.7f;
+			vertices[i + 5] = 0.4f;
 	
 			//increase angle value in radians
 			//(2*pi)/number of verts on circumference
