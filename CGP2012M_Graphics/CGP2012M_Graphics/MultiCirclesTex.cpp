@@ -4,12 +4,11 @@
 #include <vector>
 
 //include shape, shader header files
-#include "GLerror.h"
 #include "SDL_Start.h"
-#include "Triangle_T.h"
-#include "Circle.h"
-#ifndef SHADERCLASS_H
-#define SHADERCLASS_H
+#include "Triangle.h"
+#include "CircleTexture.h"
+#include "ShaderClass.h"
+#include "TextureClass.h"
 
 // // GLEW - OpenGL Extension Wrangler - http://glew.sourceforge.net/
 // // NOTE: include before SDL.h
@@ -22,7 +21,7 @@
 #ifndef SDL_H
 #define SDL_H
 #include "SDL.h"
-#include "SDL_image.h"
+//#include "SDL_image.h"
 //#include "SDL_mixer.h"
 //#include "SDL_ttf.h"
 
@@ -41,62 +40,41 @@ int main(int argc, char *argv[]) {
 	SDL_Start sdl;
 	SDL_GLContext context = sdl.Init();
 
-	//error class
-	GLerror glerr;
-	int errorLabel;
-
 	//GLEW initialise
 	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
 
-	//register debug callback
-	if (glDebugMessageCallback)
-	{
-
-		std::cout << "Registering OpenGL Debug callback function" << std::endl;
-		glDebugMessageCallback(glerr.openglCallbackFunction, &errorLabel);
-		glDebugMessageControl(GL_DONT_CARE,
-			GL_DONT_CARE,
-			GL_DONT_CARE,
-			0,
-			NULL,
-			true);
-	}
-
 	//*****************************************************
 	//OpenGL specific data
-	//create triangle
-	Triangle_T tri_T;
-
 	//create 10 circles
 	float randValue, randValue2;
 	srand(time(0));
-	std::vector<Circle> circles;
+	std::vector<CircleTexture> circles;
 
 	for (int i = 0; i < 5; i++)
 	{
 		randValue = (float)rand() / RAND_MAX;
 		randValue2 = (float)rand() / RAND_MAX;
-		circles.push_back(Circle(0.2f, (randValue-0.5f), (randValue2 -0.5f)));
+		circles.push_back(CircleTexture(0.2f, (randValue-0.5f), (randValue2 -0.5f)));
 	}
 
-	errorLabel = 0;
-
+	//create texture
+	Texture tex;
+	tex.load("..//..//Assets//Textures//circlePattern_alpha.png");
 	//create shaders
-	Shader vSh("..//..//Assets//Shaders//shaderColour.vert");
-	Shader fSh("..//..//Assets//Shaders//shaderColour.frag");
-	
+	Shader vSh("..//..//Assets//Shaders//shader_vColour_Texture.vert");
+	Shader fSh("..//..//Assets//Shaders//shader_vColour_Texture.frag");
 
 	//create, allocate and compile shaders
 	//compile the shader code
 	//1 for vertex, 2 for fragment - there is probably a better way to do this
 	vSh.getShader(1);
 	fSh.getShader(2);
-	
 
 	//create shader program, attach shaders together in the shader program
 	GLuint shaderProgram;
 	shaderProgram = glCreateProgram();
+
 	glAttachShader(shaderProgram, vSh.shaderID);
 	glAttachShader(shaderProgram, fSh.shaderID);
 	glLinkProgram(shaderProgram);
@@ -105,18 +83,14 @@ int main(int argc, char *argv[]) {
 	glDeleteShader(vSh.shaderID);
 	glDeleteShader(fSh.shaderID);
 
-
-	errorLabel = 2;
-
 	//OpenGL buffers
-	tri_T.setBuffers();
+	tex.setBuffers();
 	//set buffers for the circles
 	for (int q = 0; q < 5; q++)
 	{
 		circles[q].setBuffers();
 	}
-
-	errorLabel = 3;
+	
 	//***********************************************
 
 	SDL_Event event;
@@ -133,28 +107,18 @@ int main(int argc, char *argv[]) {
 		glClearColor(1.0f, 1.0f, 1.0f, 1);
 		glClear(GL_COLOR_BUFFER_BIT); 
 
-		errorLabel = 4;
-
-		//draw the triangle with a shader and texture
-		tri_T.render();
-
 		//draw the circles
 		//Use shader program we have compiled and linked
 		glUseProgram(shaderProgram);
 
 		//set to wireframe so we can see the circles
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
+		glBindTexture(GL_TEXTURE_2D, tex.texture);
 		//render the circles
-		/*for (int q = 0; q < 5; q++)
+		for (int q = 0; q < 5; q++)
 		{
-			glBindVertexArray(circles[q].VAO);
 			circles[q].render();
-		}*/
-
-		
-
-
+		}
 
 		SDL_GL_SwapWindow(sdl.win);
 
@@ -185,6 +149,5 @@ int main(int argc, char *argv[]) {
 
 
 }
-#endif
 #endif
 #endif

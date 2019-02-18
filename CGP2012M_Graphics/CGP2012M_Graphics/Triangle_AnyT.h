@@ -1,11 +1,13 @@
 #pragma once
 #include <GL/glew.h>
 #include <array>
+#include <string>
 #include <ctime>
 #include "ShaderClass.h"
 #include "TextureClass.h"
+#include "Textures.h"
 
-class Triangle_T
+class Triangle_AnyT
 {
 public:
 	//shader for the triangle
@@ -13,14 +15,20 @@ public:
 	GLuint shaderProgram1;
 	//single texture for the triangle
 	Texture tex;
+	float offsetX, offsetY;
 
 
-	//constructor
-	Triangle_T()
+	//constructors
+	Triangle_AnyT() {}
+
+	Triangle_AnyT(std::string filename, float _offsetX, float _offsetY)
 	{
+		offsetX = _offsetX;
+		offsetY = _offsetY;
+
 		//shaders
-		vSh1.shaderFileName("..//..//Assets//Shaders//shader_vColour_Transform.vert");
-		fSh1.shaderFileName("..//..//Assets//Shaders//shader_vColour_Transform.frag");
+		vSh1.shaderFileName("..//..//Assets//Shaders//shader_vColour_Texture.vert");
+		fSh1.shaderFileName("..//..//Assets//Shaders//shader_vColour_Texture.frag");
 
 		vSh1.getShader(1);
 		fSh1.getShader(2);
@@ -34,15 +42,15 @@ public:
 		glDeleteShader(fSh1.shaderID);
 
 		//load the texture file
-		tex.load("..//..//Assets//Textures//United_Kingdom.jpg");
+		tex.load(filename.c_str());
 
 	}
 
 	//define vertices for the triangle -position/colour/texture coordinates
 	GLfloat vertices[24] = {
-		 -0.5f, 0.5f, 0.0f,    0.0f, 0.0f, 1.0f,   0.0f, 1.0f,
-		 -0.5f, -0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 0.0f,
-		  0.5f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,    1.0f, 0.5f
+		 -0.5f+offsetX, 0.5f+offsetY, 0.0f,    0.0f, 0.0f, 1.0f,   0.0f, 1.0f,
+		 -0.5f+offsetX, -0.5f+offsetY, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 0.0f,
+		  0.5f+offsetX, 0.0f+offsetY, 0.0f,   1.0f, 0.0f, 0.0f,    1.0f, 0.5f
 	};
 
 	 

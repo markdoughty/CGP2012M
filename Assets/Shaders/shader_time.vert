@@ -17,8 +17,7 @@ void main()
 	float intermediateY = sin(uTime/1000);
 	float yPos = intermediateY*Position.y;
 
-	
-	gl_Position = vec4(xPos, Position.y, Position.z, 1.0);
+	gl_Position = vec4(xPos, yPos, Position.z, 1.0);
 	Colour = vColour; 					//pass the vertex colour unchanged to the fragment shader
 
 }

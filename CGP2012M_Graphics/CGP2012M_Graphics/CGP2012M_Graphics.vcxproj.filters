@@ -36,9 +36,18 @@
     <ClInclude Include="TextureClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Triangle_AnyT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Week4_Uniform.cpp">
+    <ClCompile Include="Week4_Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

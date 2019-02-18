@@ -8,6 +8,8 @@
 #include "SDL_Start.h"
 #include "Triangle_T.h"
 #include "Circle.h"
+#ifndef TEXTURECLASS_H
+#define TEXTURECLASS_H
 #ifndef SHADERCLASS_H
 #define SHADERCLASS_H
 
@@ -34,7 +36,19 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+//***************
+//variables
+SDL_Event event;
+bool windowOpen = true;
 
+glm::mat4 translate;
+glm::mat4 rotate;
+glm::mat4 scale;
+float angle = 0;
+
+//**************
+//function prototypes
+void handleInput();
 
 int main(int argc, char *argv[]) {
 	//start and initialise SDL
@@ -68,8 +82,9 @@ int main(int argc, char *argv[]) {
 	//create triangle
 	Triangle_T tri_T;
 
+	//circles have been commented out for clarity
 	//create 10 circles
-	float randValue, randValue2;
+	/*float randValue, randValue2;
 	srand(time(0));
 	std::vector<Circle> circles;
 
@@ -78,32 +93,32 @@ int main(int argc, char *argv[]) {
 		randValue = (float)rand() / RAND_MAX;
 		randValue2 = (float)rand() / RAND_MAX;
 		circles.push_back(Circle(0.2f, (randValue-0.5f), (randValue2 -0.5f)));
-	}
+	}*/
 
 	errorLabel = 0;
 
 	//create shaders
-	Shader vSh("..//..//Assets//Shaders//shaderColour.vert");
-	Shader fSh("..//..//Assets//Shaders//shaderColour.frag");
+	/*Shader vSh("..//..//Assets//Shaders//shaderColour.vert");
+	Shader fSh("..//..//Assets//Shaders//shaderColour.frag");*/
 	
 
 	//create, allocate and compile shaders
 	//compile the shader code
 	//1 for vertex, 2 for fragment - there is probably a better way to do this
-	vSh.getShader(1);
-	fSh.getShader(2);
-	
+	//vSh.getShader(1);
+	//fSh.getShader(2);
+	//
 
-	//create shader program, attach shaders together in the shader program
-	GLuint shaderProgram;
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vSh.shaderID);
-	glAttachShader(shaderProgram, fSh.shaderID);
-	glLinkProgram(shaderProgram);
+	////create shader program, attach shaders together in the shader program
+	//GLuint shaderProgram;
+	//shaderProgram = glCreateProgram();
+	//glAttachShader(shaderProgram, vSh.shaderID);
+	//glAttachShader(shaderProgram, fSh.shaderID);
+	//glLinkProgram(shaderProgram);
 
-	//delete shader source code pointers
-	glDeleteShader(vSh.shaderID);
-	glDeleteShader(fSh.shaderID);
+	////delete shader source code pointers
+	//glDeleteShader(vSh.shaderID);
+	//glDeleteShader(fSh.shaderID);
 
 
 	errorLabel = 2;
@@ -111,21 +126,33 @@ int main(int argc, char *argv[]) {
 	//OpenGL buffers
 	tri_T.setBuffers();
 	//set buffers for the circles
-	for (int q = 0; q < 5; q++)
+	/*for (int q = 0; q < 5; q++)
 	{
 		circles[q].setBuffers();
-	}
+	}*/
 
 	errorLabel = 3;
-	//***********************************************
+	//*****************************************
+	//set uniform variables
+	int transformLocation;
 
-	SDL_Event event;
-	bool windowOpen = true;
+	//initialise transform matrices 
+	translate = glm::mat4(1.0f);
+	rotate = glm::mat4(1.0f);
+	scale = glm::mat4(1.0f);
 
+	/*translate = glm::translate(translate, glm::vec3(0.2f, 0.3f, 0.0f));
+	rotate = glm::rotate(rotate, glm::radians(90.0f), glm::vec3(0, 0, 1));*/
+	scale = glm::scale(scale, glm::vec3(0.1f, 0.1f, 0.0f));
+
+	errorLabel = 4;
 	//*****************************
 	//'game' loop
 	while (windowOpen)
 	{
+		//*************************
+		//process inputs
+		handleInput();
 
 		//****************************
 		// OpenGL calls.
@@ -133,14 +160,20 @@ int main(int argc, char *argv[]) {
 		glClearColor(1.0f, 1.0f, 1.0f, 1);
 		glClear(GL_COLOR_BUFFER_BIT); 
 
-		errorLabel = 4;
+		errorLabel = 5;
+		//specify shader program to use
+		//to allow transform uniform to be passed in
+		glUseProgram(tri_T.shaderProgram1);
+
+		transformLocation = glGetUniformLocation(tri_T.shaderProgram1, "uTransform");
+		glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(translate*rotate*scale));
 
 		//draw the triangle with a shader and texture
 		tri_T.render();
 
 		//draw the circles
 		//Use shader program we have compiled and linked
-		glUseProgram(shaderProgram);
+		//glUseProgram(shaderProgram);
 
 		//set to wireframe so we can see the circles
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -152,39 +185,52 @@ int main(int argc, char *argv[]) {
 			circles[q].render();
 		}*/
 
-		
-
-
-
 		SDL_GL_SwapWindow(sdl.win);
 
-		//*****************************
-		//SDL handled input
-		//Any input to the program is done here
+	}//end loop
 
-		
-			if (SDL_PollEvent(&event))
-			{
-				if (event.type == SDL_QUIT)
-				{
-					windowOpen = false;
-				}
-			}
-		
-
-	}
 	//****************************
 	// Once finished with OpenGL functions, the SDL_GLContext can be deleted.
 	SDL_GL_DeleteContext(context);
 
 	SDL_Quit();
 	return 0;
-
-
-
-
-
 }
+
+void handleInput()
+{
+	//*****************************
+		//SDL handled input
+		//Any input to the program is done here
+
+
+	if (SDL_PollEvent(&event))
+	{
+		if (event.type == SDL_QUIT)
+		{
+			windowOpen = false;
+		}
+		if (event.type == SDL_KEYDOWN)
+		{
+			switch (event.key.keysym.sym)
+			{
+			case SDLK_UP:
+				translate = glm::translate(translate, glm::vec3((float)cos(angle)*0.01f, (float)sin(angle)*0.01f, 0.0f));
+				break;
+			case SDLK_a:
+				angle += glm::radians(10.0f);
+				rotate = glm::rotate(rotate,glm::radians(10.0f), glm::vec3(0, 0, 1));
+				break;
+			case SDLK_d:
+				angle -= glm::radians(10.0f);
+				rotate = glm::rotate(rotate, glm::radians(-10.0f) , glm::vec3(0, 0, 1));
+				break;
+			
+			}
+		}
+	}
+}
+#endif
 #endif
 #endif
 #endif
