@@ -47,7 +47,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Week4_Transform.cpp">
+    <ClCompile Include="Week6_OrthoProjection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

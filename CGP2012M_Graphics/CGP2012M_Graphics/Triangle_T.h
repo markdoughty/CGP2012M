@@ -19,8 +19,8 @@ public:
 	Triangle_T()
 	{
 		//shaders
-		vSh1.shaderFileName("..//..//Assets//Shaders//shader_vColour_Transform.vert");
-		fSh1.shaderFileName("..//..//Assets//Shaders//shader_vColour_Transform.frag");
+		vSh1.shaderFileName("..//..//Assets//Shaders//shader_vColour_Projection.vert");
+		fSh1.shaderFileName("..//..//Assets//Shaders//shader_vColour_Projection.frag");
 
 		vSh1.getShader(1);
 		fSh1.getShader(2);
@@ -34,7 +34,7 @@ public:
 		glDeleteShader(fSh1.shaderID);
 
 		//load the texture file
-		tex.load("..//..//Assets//Textures//United_Kingdom.jpg");
+		tex.load("..//..//Assets//Textures//United_Kingdom.png");
 
 	}
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <GL/glew.h>
+#include "TextureClass.h"
 #include <array>
 #include <cmath>
 
@@ -13,6 +14,8 @@ public:
 	GLuint VAO;
 	//set up index buffer object
 	GLuint EBO;
+	//set up texture
+	Texture tex;
 
 	//set up vertex array
 	GLfloat vertices[240];
@@ -76,14 +79,19 @@ public:
 			vertices[i + 4] = 0.0f;
 			vertices[i + 5] = 0.4f;
 			//texture coordinate information
-			vertices[i + 6] = radius * cos(angle);
-			vertices[i + 7] = radius * sin(angle);
+			vertices[i + 6] = ((radius * cos(angle) )*0.5f)+0.5f;
+			vertices[i + 7] = ((radius * sin(angle) )*0.5f)+0.5f;
+		
+	
 	
 			//increase angle value in radians
 			//(2*pi)/number of verts on circumference
 			angle += (2*3.141)/28.0f;
 
 		}
+
+		//load the texture file
+		tex.load("..//..//Assets//Textures//circlePattern_alpha.png");
 	}
 
 	void setBuffers()
@@ -116,12 +124,16 @@ public:
 		glEnableVertexAttribArray(2);
 		//Unbind the VAO
 		glBindVertexArray(0);
+
+		//texture buffers
+		tex.setBuffers();
 	}
 
 	void render()
 	{
 		//draw the circle 
 		glBindVertexArray(VAO);
+		glBindTexture(GL_TEXTURE_2D, tex.texture);
 		glPointSize(5.0f);
 		glDrawElements(GL_TRIANGLES, 87, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
