@@ -24,6 +24,7 @@
     <ClInclude Include="GLerror.h" />
     <ClInclude Include="SDL_Start.h" />
     <ClInclude Include="ShaderClass.h" />
+    <ClInclude Include="Square.h" />
     <ClInclude Include="TextureClass.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Triangle.h" />

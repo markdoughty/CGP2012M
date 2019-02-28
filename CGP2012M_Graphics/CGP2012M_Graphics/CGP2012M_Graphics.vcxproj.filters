@@ -45,6 +45,9 @@
     <ClInclude Include="CircleTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Square.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Week6_OrthoProjection.cpp">
