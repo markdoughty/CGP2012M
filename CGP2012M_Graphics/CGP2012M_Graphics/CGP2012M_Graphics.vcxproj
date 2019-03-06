@@ -32,7 +32,7 @@
     <ClInclude Include="Triangle_T.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Week6_OrthoProjection.cpp" />
+    <ClCompile Include="Week7_OrthoProjection_SimpleLight.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

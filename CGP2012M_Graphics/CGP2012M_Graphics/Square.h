@@ -20,8 +20,8 @@ public:
 	Square() 
 	{
 		//shaders
-		vSh.shaderFileName("..//..//Assets//Shaders//shader_vColour_Projection.vert");
-		fSh.shaderFileName("..//..//Assets//Shaders//shader_vColour_Projection.frag");
+		vSh.shaderFileName("..//..//Assets//Shaders//shader_Projection_basicLight.vert");
+		fSh.shaderFileName("..//..//Assets//Shaders//shader_Projection_basicLight.frag");
 
 		vSh.getShader(1);
 		fSh.getShader(2);

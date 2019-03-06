@@ -50,7 +50,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Week6_OrthoProjection.cpp">
+    <ClCompile Include="Week7_OrthoProjection_SimpleLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
