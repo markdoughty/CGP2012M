@@ -49,14 +49,23 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-	<Filter>Header Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SDL_ttf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelLoaderClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Week8_PerspectiveProjection_Camera.cpp">
+    <ClCompile Include="Week9_3D_2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

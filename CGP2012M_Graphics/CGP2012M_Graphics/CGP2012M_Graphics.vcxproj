@@ -22,7 +22,10 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="CircleTexture.h" />
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="GLerror.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="ModelLoaderClass.h" />
     <ClInclude Include="SDL_Start.h" />
     <ClInclude Include="SDL_ttf.h" />
     <ClInclude Include="ShaderClass.h" />
@@ -34,7 +37,7 @@
     <ClInclude Include="Triangle_T.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Week8_PerspectiveProjection_Camera.cpp" />
+    <ClCompile Include="Week9_3D_2.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
