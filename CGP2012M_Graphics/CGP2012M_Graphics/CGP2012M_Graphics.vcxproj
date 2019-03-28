@@ -37,7 +37,7 @@
     <ClInclude Include="Triangle_T.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Week9_3D_2.cpp" />
+    <ClCompile Include="Week10_Lighting+Diffuse.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

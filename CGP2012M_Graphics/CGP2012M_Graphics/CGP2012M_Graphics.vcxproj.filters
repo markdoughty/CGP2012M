@@ -65,7 +65,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Week9_3D_2.cpp">
+    <ClCompile Include="Week10_Lighting+Diffuse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -7,5 +7,6 @@ uniform sampler2D aTex;		//uniform holding texture info from main programme
 void main()
 {
 	gl_FragColor = texture(aTex, textureCoordinate);
+	//gl_FragColor = vec4(Colour, 1.0f);;
 	
 }

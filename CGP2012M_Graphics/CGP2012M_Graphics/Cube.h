@@ -23,8 +23,12 @@ public:
 	Cube() 
 	{
 		//shaders
-		vSh.shaderFileName("..//..//Assets//Shaders//shader_vColour_Projection.vert");
-		fSh.shaderFileName("..//..//Assets//Shaders//shader_vColour_Projection.frag");
+		//vSh.shaderFileName("..//..//Assets//Shaders//shader_projection_lighting_A.vert");
+		//fSh.shaderFileName("..//..//Assets//Shaders//shader_projection_lighting_A.frag");
+		vSh.shaderFileName("..//..//Assets//Shaders//shader_projection_lighting_AD.vert");
+		fSh.shaderFileName("..//..//Assets//Shaders//shader_projection_lighting_AD.frag");
+		//vSh.shaderFileName("..//..//Assets//Shaders//shader_projection_lighting_ADS.vert");
+		//fSh.shaderFileName("..//..//Assets//Shaders//shader_projection_lighting_ADS.frag");
 
 		vSh.getShader(1);
 		fSh.getShader(2);
@@ -38,53 +42,53 @@ public:
 		glDeleteShader(fSh.shaderID);
 
 		//load the texture file
-		tex.load("..//..//Assets//Textures//bricks.png");
+		tex.load("..//..//Assets//Textures//United_Kingdom.png");
 	};
 	
 	//define vertices for the Cube
-	GLfloat vertices[288] = {
-		//vertices			    	colour values		texture coordinates 
-	 -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,	0.0f, 0.0f,
-	 0.5f, -0.5f, -0.5f, 1.0f, 0.0f,  0.0f,	1.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f, 1.0f, 0.0f,  0.0f,	1.0f, 1.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 0.0f,  0.0f,	1.0f, 1.0f,
-	-0.5f,  0.5f, -0.5f,  1.0f,0.0f,  0.0f,	0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  1.0f, 0.0f,  0.0f,	0.0f, 0.0f,
+	GLfloat vertices[396] = {
+		//vertices			 colour values    texture coords      normals
+	 -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,	0.0f, 0.0f,    0.0f, 0.0f, -1.0f,
+	 0.5f, -0.5f, -0.5f,   1.0f, 0.0f,  0.0f,	1.0f, 0.0f,    0.0f, 0.0f, -1.0f,
+	 0.5f,  0.5f, -0.5f,   1.0f, 0.0f,  0.0f,	1.0f, 1.0f,    0.0f, 0.0f, -1.0f,
+	 0.5f,  0.5f, -0.5f,   1.0f, 0.0f,  0.0f,	1.0f, 1.0f,    0.0f, 0.0f, -1.0f,
+	-0.5f,  0.5f, -0.5f,   1.0f,0.0f,  0.0f,	0.0f, 1.0f,    0.0f, 0.0f, -1.0f,
+	-0.5f, -0.5f, -0.5f,   1.0f, 0.0f,  0.0f,	0.0f, 0.0f,    0.0f, 0.0f, -1.0f,
 
-	-0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,		0.0f, 0.0f,
-	 0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		1.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		1.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f, 1.0f,0.0f, 0.0f,		1.0f, 1.0f,
-	-0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,		0.0f, 0.0f,    0.0f, 0.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		1.0f, 0.0f,    0.0f, 0.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		1.0f, 1.0f,    0.0f, 0.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f, 1.0f,0.0f, 0.0f,		1.0f, 1.0f,    0.0f, 0.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 1.0f,    0.0f, 0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 0.0f,    0.0f, 0.0f, 1.0f,
 
-	-0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,		1.0f, 0.0f,
-	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,		1.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,		1.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 1.0f,
-	-0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 0.0f,    -1.0f, 0.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,		1.0f, 0.0f,    -1.0f, 0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,		1.0f, 1.0f,    -1.0f, 0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,		1.0f, 1.0f,    -1.0f, 0.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 1.0f,    -1.0f, 0.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 0.0f,    -1.0f, 0.0f, 0.0f,
 
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,		0.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,		1.0f, 0.0f,
-	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,		1.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,		1.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f, 1.0f,0.0f, 0.0f,		0.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,		0.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,		0.0f, 0.0f,     1.0f, 0.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,		1.0f, 0.0f,     1.0f, 0.0f, 0.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,		1.0f, 1.0f,     1.0f, 0.0f, 0.0f, 
+	 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,		1.0f, 1.0f,     1.0f, 0.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f, 1.0f,0.0f, 0.0f,		0.0f, 1.0f,     1.0f, 0.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,		0.0f, 0.0f,     1.0f, 0.0f, 0.0f,
 
-	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 0.0f,
-	 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,		1.0f, 0.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,		1.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,		1.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 0.0f,     0.0f, -1.0f, 0.0f,
+	 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,		1.0f, 0.0f,     0.0f, -1.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,		1.0f, 1.0f,     0.0f, -1.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,		1.0f, 1.0f,     0.0f, -1.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 1.0f,     0.0f, -1.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 0.0f,     0.0f, -1.0f, 0.0f,
 
-	-0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,		0.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 0.0f,		1.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		1.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		1.0f, 1.0f,
-	-0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 1.0f,
-	-0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,		0.0f, 0.0f
+	-0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,		0.0f, 0.0f,     0.0f, 1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 0.0f,		1.0f, 0.0f,     0.0f, 1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		1.0f, 1.0f,     0.0f, 1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		1.0f, 1.0f,     0.0f, 1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f,		0.0f, 1.0f,     0.0f, 1.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,		0.0f, 0.0f,     0.0f, 1.0f, 0.0f
 	};
 
 	void setBuffers()
@@ -104,16 +108,20 @@ public:
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 		
 		// Then set our vertex attributes pointers
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), (GLvoid*)0);
 		glEnableVertexAttribArray(0);
 		
 		//set the colour attribute pointer
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 		glEnableVertexAttribArray(1);
 		
 		//set texture attrib pointer
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
 		glEnableVertexAttribArray(2);
+
+		//set normal attrib pointer
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), (GLvoid*)(8 * sizeof(GLfloat)));
+		glEnableVertexAttribArray(3);
 
 		//Unbind the VAO
 		glBindVertexArray(0);
