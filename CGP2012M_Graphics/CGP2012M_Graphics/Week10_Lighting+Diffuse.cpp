@@ -309,7 +309,7 @@ int main(int argc, char *argv[]) {
 		lightPositionLocation = glGetUniformLocation(model.shaderProgram, "lightPos");
 		glUniform3fv(lightPositionLocation, 1, glm::value_ptr(lightPosition));
 		//rotation
-		modelRotate = glm::rotate(modelRotate, (float)elapsedTime / 1000, glm::vec3(0.0f, 1.0f, 0.0f));
+		modelRotate = glm::rotate(modelRotate, (float)elapsedTime / 2000, glm::vec3(0.0f, 1.0f, 0.0f));
 		importModelLocation = glGetUniformLocation(model.shaderProgram, "uModel");
 		glUniformMatrix4fv(importModelLocation, 1, GL_FALSE, glm::value_ptr(modelTranslate*modelRotate*modelScale));
 		importViewLocation = glGetUniformLocation(model.shaderProgram, "uView");
